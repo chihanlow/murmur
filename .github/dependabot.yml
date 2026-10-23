@@ -1,0 +1,7 @@
+# Murmur has no Swift package dependencies, so only the Actions versions need watching.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

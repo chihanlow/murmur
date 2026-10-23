@@ -19,8 +19,11 @@ ctx.restoreGState()
 ctx.saveGState()
 ctx.addPath(shape)
 ctx.clip()
-let colors = [NSColor(srgbRed: 0.27, green: 0.22, blue: 0.80, alpha: 1).cgColor,
-              NSColor(srgbRed: 0.10, green: 0.09, blue: 0.29, alpha: 1).cgColor] as CFArray
+let colors =
+    [
+        NSColor(srgbRed: 0.27, green: 0.22, blue: 0.80, alpha: 1).cgColor,
+        NSColor(srgbRed: 0.10, green: 0.09, blue: 0.29, alpha: 1).cgColor,
+    ] as CFArray
 let gradient = CGGradient(colorsSpace: CGColorSpace(name: CGColorSpace.sRGB), colors: colors, locations: [0, 1])!
 ctx.drawLinearGradient(gradient, start: CGPoint(x: 200, y: 924), end: CGPoint(x: 824, y: 100), options: [])
 ctx.restoreGState()

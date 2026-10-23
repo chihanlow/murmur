@@ -20,6 +20,8 @@ This builds the app, draws its icon and installs it at `/Applications/Murmur.app
 
 ## Test
 
+`swift test` covers the pure text handling (rules parsing, word swaps, reply tidying) and runs on CI with lint and a release build. Speech recognition and Apple Intelligence cleanup can't run on CI, so check them by hand:
+
 ```sh
 swift build -c release
 .build/release/Murmur --transcribe sample.aiff   # prints the raw and cleaned transcript
