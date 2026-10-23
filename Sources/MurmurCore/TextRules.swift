@@ -3,10 +3,13 @@ import Foundation
 /// The pure text handling behind cleanup: parsing the rules file, word swaps and tidying the model's reply.
 public enum TextRules {
     /// Splits rules text into instructions for the model and the `heard → written` swaps under `## Replacements`.
+    /// Only `-` or `*` list lines are swaps, so prose that mentions the arrow is skipped.
     public static func parse(_ text: String) -> (instructions: String, replacements: [(String, String)]) {
         guard let range = text.range(of: "## Replacements") else { return (text, []) }
         let replacements = text[range.upperBound...].split(separator: "\n").compactMap { line -> (String, String)? in
-            let parts = line.components(separatedBy: "→")
+            let item = line.trimmingCharacters(in: .whitespaces)
+            guard item.hasPrefix("-") || item.hasPrefix("*") else { return nil }
+            let parts = item.components(separatedBy: "→")
             guard parts.count == 2 else { return nil }
             let heard = parts[0].trimmingCharacters(in: CharacterSet(charactersIn: "-*` ").union(.whitespaces))
             let written = parts[1].trimmingCharacters(in: CharacterSet(charactersIn: "` ").union(.whitespaces))

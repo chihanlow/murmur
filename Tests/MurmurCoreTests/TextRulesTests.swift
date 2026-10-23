@@ -27,6 +27,17 @@ struct ParseTests {
         #expect(rules.replacements.isEmpty)
     }
 
+    @Test func readsOnlyListLinesAsSwaps() {
+        let text = """
+            ## Replacements
+
+            Exact swaps, one per line as `heard → written`.
+
+            - clawed → Claude
+            """
+        #expect(TextRules.parse(text).replacements.map(\.0) == ["clawed"])
+    }
+
     @Test func skipsLinesWithEmptyHeardSide() {
         #expect(TextRules.parse("## Replacements\n- → Claude").replacements.isEmpty)
     }
