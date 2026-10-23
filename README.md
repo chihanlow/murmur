@@ -16,7 +16,7 @@ This builds the app, draws its icon and installs it at `/Applications/Murmur.app
 
 - **Option-Space** starts listening; a pill at the bottom of the screen shows your voice level. Option-Space again stops and pastes.
 - **Menu bar:** Clean Up with Apple Intelligence (on or off), Edit Cleanup Rules…, Open at Login.
-- **Rules file** (`~/Library/Application Support/Murmur/rules.md`): plain-English rules for the cleanup, then a `## Replacements` list of `heard → written` swaps. The swaps run as find-and-replace, even with cleanup off, because the on-device model applied a word list unreliably.
+- **Rules file** (`~/Library/Application Support/Murmur/rules.md`): plain-English rules for the cleanup, then a `## Replacements` list of `- heard → written` swaps (only lines starting with `-` or `*` count). The swaps run as find-and-replace, even with cleanup off, because the on-device model applied a word list unreliably.
 
 ## Test
 
