@@ -1,0 +1,9 @@
+# Same lint CI runs. swift-format ships with the Xcode toolchain, so nothing to install.
+repos:
+  - repo: local
+    hooks:
+      - id: swift-format
+        name: swift format lint
+        entry: swift format lint --strict
+        language: system
+        types: [swift]

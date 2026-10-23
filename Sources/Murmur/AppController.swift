@@ -1,6 +1,7 @@
-import AppKit
 import AVFoundation
+import AppKit
 import Carbon.HIToolbox
+import MurmurCore
 import ServiceManagement
 
 @MainActor
@@ -47,8 +48,9 @@ final class AppController: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func startDictation() {
         guard AVCaptureDevice.authorizationStatus(for: .audio) == .authorized else {
-            alert("Murmur needs the microphone", "Allow it in System Settings › Privacy & Security › Microphone.",
-                  settings: "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone")
+            alert(
+                "Murmur needs the microphone", "Allow it in System Settings › Privacy & Security › Microphone.",
+                settings: "x-apple.systempreferences:com.apple.preference.security?Privacy_Microphone")
             return
         }
         let transcriber = Transcriber()
@@ -84,7 +86,7 @@ final class AppController: NSObject, NSApplicationDelegate, NSMenuDelegate {
                     hud.show(.cleaning)
                     text = (try? await Cleaner.clean(text)) ?? text
                 } else {
-                    text = Cleaner.applyReplacements(text, Cleaner.loadRules().replacements)
+                    text = TextRules.applyReplacements(text, Cleaner.loadRules().replacements)
                 }
                 finish(text)
             } catch {
@@ -97,9 +99,10 @@ final class AppController: NSObject, NSApplicationDelegate, NSMenuDelegate {
         reset()
         guard !text.isEmpty else { return }
         if !Paster.paste(text) {
-            alert("Text copied to the clipboard",
-                  "To paste it for you, Murmur needs Accessibility access in System Settings › Privacy & Security › Accessibility. Then press ⌘V.",
-                  settings: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")
+            alert(
+                "Text copied to the clipboard",
+                "To paste it for you, Murmur needs Accessibility access in System Settings › Privacy & Security › Accessibility. Then press ⌘V.",
+                settings: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")
         }
     }
 
@@ -141,7 +144,8 @@ final class AppController: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(.separator())
 
         if !Paster.isTrusted {
-            menu.addItem(NSMenuItem(title: "Allow Auto-Paste (Accessibility)…", action: #selector(openAccessibility), keyEquivalent: ""))
+            menu.addItem(
+                NSMenuItem(title: "Allow Auto-Paste (Accessibility)…", action: #selector(openAccessibility), keyEquivalent: ""))
         }
         let login = NSMenuItem(title: "Open at Login", action: #selector(toggleLogin), keyEquivalent: "")
         login.state = SMAppService.mainApp.status == .enabled ? .on : .off
